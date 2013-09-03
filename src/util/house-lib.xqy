@@ -5,7 +5,7 @@ module namespace house-lib = "house.gov/lib";
 import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
 import module namespace t-lib = "http://marklogic.com/semantics/triples-lib" at "/lib/triples-lib.xqy";
 
-declare namespace house   = "http://xml.house.gov/schemas/uslm/1.0";
+declare namespace house = "http://xml.house.gov/schemas/uslm/1.0";
 declare namespace dc = "http://purl.org/dc/elements/1.1/";
 
 declare function house-lib:identifier(
@@ -29,7 +29,7 @@ declare function house-lib:section-triples(
     )
   return 
   (
-    sem:triple(sem:iri($subject), sem:iri("rdf:type"), sem:iri("house:section")),
+    sem:triple(sem:iri($subject), sem:iri("rdf:type"), sem:iri("http://xml.house.gov/schemas/uslm/1.0/section")),
     sem:triple(sem:iri($subject), sem:iri("http://purl.org/dc/terms/isPartOf"), $title-iri),
     t-lib:triple-from-element($subject, $section/house:heading),
     for $amendment in $section/house:notes/house:note[@topic eq "amendments"]
@@ -54,9 +54,9 @@ declare function house-lib:amendment(
       )
     return
     (
-      sem:triple($subject, sem:iri("rdf:type"), sem:iri("house:amendment")),
-      sem:triple($subject, sem:iri("house:amends"), sem:iri($section-iri)),
-      sem:triple($subject, sem:iri("dc:source"), xs:string($ref/text())) 
+      sem:triple($subject, sem:iri("rdf:type"), sem:iri("http://xml.house.gov/schemas/uslm/1.0/amendment")),
+      sem:triple($subject, sem:iri("http://xml.house.gov/schemas/uslm/1.0/amends"), sem:iri($section-iri)),
+      sem:triple($subject, sem:iri("http://purl.org/dc/elements/1.1/source"), xs:string($ref/text())) 
     )
   else 
     fn:error("HOUSELIB:NOTAMENDMENT", "This note is not an amendment")
