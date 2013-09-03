@@ -7,7 +7,7 @@ import module namespace t-lib = "http://marklogic.com/semantics/triples-lib" at 
 declare namespace house = "http://xml.house.gov/schemas/uslm/1.0";
 
 let $triples :=
-  for $law-doc in fn:collection("us-code")[1]/element()
+  for $law-doc in fn:collection("us-code")[1 to 5]/element()
   let $title := $law-doc//house:title 
   let $house-ns := fn:namespace-uri($title)
   let $subject := fn:concat($house-ns, "/", h-lib:identifier($title/@identifier))
@@ -30,7 +30,7 @@ let $triples :=
     )
   )
 return 
-  let $display-only := fn:true()
+  let $display-only := fn:false()
   return
     if ($display-only) then
       $triples
