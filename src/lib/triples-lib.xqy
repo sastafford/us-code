@@ -8,7 +8,15 @@ declare function t-lib:triple-from-element(
 ) as sem:triple {
   sem:triple(
     sem:iri($subject),
-    sem:iri(fn:concat(fn:namespace-uri($el), "/", fn:name($el))),
+    sem:iri(
+      let $ns := fn:namespace-uri($el)
+      return
+      fn:concat(
+        $ns, 
+        if (fn:ends-with($ns, "/")) then "" else "/", 
+        fn:name($el)
+      )
+    ),
     fn:normalize-space(fn:string($el))
   )
 };
