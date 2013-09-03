@@ -19,6 +19,7 @@ declare function house-lib:identifier(
 };
 
 declare function house-lib:section-triples(
+  $title-iri as sem:iri,
   $section as element(house:section) 
 ) as sem:triple* {
   let $subject := 
@@ -29,6 +30,7 @@ declare function house-lib:section-triples(
   return 
   (
     sem:triple(sem:iri($subject), sem:iri("rdf:type"), sem:iri("house:section")),
+    sem:triple(sem:iri($subject), sem:iri("http://purl.org/dc/terms/isPartOf"), $title-iri),
     t-lib:triple-from-element($subject, $section/house:heading),
     for $amendment in $section/house:notes/house:note[@topic eq "amendments"]
     return house-lib:amendment($subject, $amendment)

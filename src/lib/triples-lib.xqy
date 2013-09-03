@@ -14,7 +14,7 @@ declare function t-lib:triple-from-element(
       fn:concat(
         $ns, 
         if (fn:ends-with($ns, "/")) then "" else "/", 
-        fn:name($el)
+        fn:local-name($el)
       )
     ),
     fn:normalize-space(fn:string($el))
