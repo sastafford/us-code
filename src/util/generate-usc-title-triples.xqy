@@ -30,7 +30,7 @@ let $triples :=
     )
   )
 return 
-  let $display-only := fn:false()
+  let $display-only := fn:true()
   return
     if ($display-only) then
       $triples

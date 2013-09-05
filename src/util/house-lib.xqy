@@ -52,13 +52,36 @@ declare function house-lib:amendment(
           $amendment-id
         )
       )
+    let $r := xs:string($ref/text())
     return
     (
       sem:triple($subject, sem:iri("rdf:type"), sem:iri("http://xml.house.gov/schemas/uslm/1.0/amendment")),
       sem:triple($subject, sem:iri("http://xml.house.gov/schemas/uslm/1.0/amends"), sem:iri($section-iri)),
-      sem:triple($subject, sem:iri("http://purl.org/dc/elements/1.1/source"), xs:string($ref/text())) 
+      sem:triple($subject, sem:iri("http://purl.org/dc/elements/1.1/source"), $r),
+      if (fn:contains($r, "Pub. L.")) then
+        let $congress-number := 
+          fn:concat( 
+            "http://congress.gov/", 
+            fn:substring-before(fn:substring-after($r, "Pub. L. "), "–")
+          )
+        return
+        (
+          sem:triple(
+            $subject,
+            sem:iri("http://purl.org/dc/terms/creator"),
+            sem:iri($congress-number)
+          ),
+          sem:triple(
+            sem:iri($congress-number),
+            sem:iri("rdf:type"),
+            "Congress"
+          ) 
+        )      
+      else
+          ()
     )
   else 
     fn:error("HOUSELIB:NOTAMENDMENT", "This note is not an amendment")
 
 };
+
